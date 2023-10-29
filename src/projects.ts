@@ -79,3 +79,34 @@ export async function getProjectByNumber(
 		}
 	);
 }
+
+export async function addIssue2Project(
+	githubToken: string,
+	owner: string,
+	projectId: string,
+	issueId: string
+): Promise<GraphQlQueryResponseData> {
+	const graphqlWithAuth = graphql.defaults({
+		headers: {
+			authorization: `Bearer ${githubToken}`
+		}
+	});
+
+	return await graphqlWithAuth(
+		`
+        mutation($userLogin: String!, $projectId: ID!, $issueId: ID!) {
+            addProjectV2ItemById(input: {clientMutationId: $userLogin projectId: $projectId contentId: $issueId}) {
+                clientMutationId 
+              item {
+                id
+              }
+            }
+          }
+        `,
+		{
+			userLogin: `${owner}`,
+			projectId: `${projectId}`,
+			issueId: `${issueId}`
+		}
+	);
+}

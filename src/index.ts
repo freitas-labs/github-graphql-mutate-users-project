@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { getProjectByNumber, getProjects } from './projects';
+import { addIssue2Project, getProjectByNumber, getProjects } from './projects';
 
 console.log(process.env.GITHUB_ACCESS_TOKEN);
 
@@ -24,4 +24,14 @@ getProjectByNumber(
 		const content = nodes[index];
 		console.log(content);
 	}
+});
+
+addIssue2Project(
+	process.env.GITHUB_ACCESS_TOKEN ?? '',
+	'rutesantos4',
+	'PVT_kwHOBj4sT84AI1rT',
+	'I_kwDOHWKCn85mZAGb'
+).then((result) => {
+	console.log('\n\n addIssue2Project');
+	console.log(result);
 });
