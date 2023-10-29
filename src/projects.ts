@@ -1,4 +1,5 @@
 import { GraphQlQueryResponseData, graphql } from '@octokit/graphql';
+import { AddedIssueInfo } from './data';
 
 export async function getProjects(
 	githubToken: string,
@@ -80,6 +81,28 @@ export async function getProjectByNumber(
 	);
 }
 
+export async function addIssues2Project(
+	githubToken: string,
+	owner: string,
+	projectId: string,
+	issuesId: string[]
+): Promise<AddedIssueInfo[]> {
+	let result: AddedIssueInfo[] = [];
+
+	for (let index = 0; index < issuesId.length; index++) {
+		const issueId = issuesId[index];
+		const newAdded = await addIssue2Project(
+			githubToken,
+			owner,
+			projectId,
+			issueId
+		);
+		result = result.concat(newAdded.addProjectV2ItemById);
+	}
+
+	return result;
+}
+
 export async function addIssue2Project(
 	githubToken: string,
 	owner: string,
@@ -97,9 +120,9 @@ export async function addIssue2Project(
         mutation($userLogin: String!, $projectId: ID!, $issueId: ID!) {
             addProjectV2ItemById(input: {clientMutationId: $userLogin projectId: $projectId contentId: $issueId}) {
                 clientMutationId 
-              item {
-                id
-              }
+                item {
+                    id
+                }
             }
           }
         `,
