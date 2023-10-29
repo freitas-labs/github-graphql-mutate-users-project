@@ -54,6 +54,7 @@
 		"typescript": "^5.0.4"
 	},
 	"dependencies": {
+		"@octokit/graphql": "^7.0.2",
 		"dotenv": "^16.3.1"
 	}
 }
