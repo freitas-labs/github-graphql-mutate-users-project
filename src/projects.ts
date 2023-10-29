@@ -34,3 +34,48 @@ export async function getProjects(
 		}
 	);
 }
+
+export async function getProjectByNumber(
+	githubToken: string,
+	owner: string,
+	projectNumber: number
+): Promise<GraphQlQueryResponseData> {
+	const graphqlWithAuth = graphql.defaults({
+		headers: {
+			authorization: `Bearer ${githubToken}`
+		}
+	});
+
+	return await graphqlWithAuth(
+		`
+        query($userLogin: String!, $number: Int!){
+            user(login: $userLogin){
+              projectV2(number: $number) {
+                createdAt
+                updatedAt
+                id
+                title
+                number
+                creator {
+                    login
+                }
+                items(first: 10) {
+                    nodes {
+                        content {
+                            ... on Issue {
+                                title
+                                url
+                            }
+                        }
+                    }
+                }
+              }
+            }
+          }
+        `,
+		{
+			userLogin: `${owner}`,
+			number: Number(`${projectNumber}`)
+		}
+	);
+}
