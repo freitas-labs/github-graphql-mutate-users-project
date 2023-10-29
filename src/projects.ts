@@ -66,6 +66,8 @@ export async function getProjectByNumber(
                             ... on Issue {
                                 title
                                 url
+                                id
+                                number
                             }
                         }
                     }
