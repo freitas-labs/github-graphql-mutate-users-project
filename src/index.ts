@@ -16,20 +16,17 @@ getProjects(process.env.GITHUB_ACCESS_TOKEN ?? '', 'freitzzz').then(
 	}
 );
 
-getProjectByNumber(
-	process.env.GITHUB_ACCESS_TOKEN ?? '',
-	'rutesantos4',
-	1
-).then((result) => {
-	console.log('\n\n getProjectByNumber');
-	console.log(result);
-	console.log(result.user.projectV2.creator);
-	const nodes = result.user.projectV2.items.nodes;
-	for (let index = 0; index < nodes.length; index++) {
-		const content = nodes[index];
-		console.log(content);
+getProjectByNumber(process.env.GITHUB_ACCESS_TOKEN ?? '', 'rutesantos4', 1).then(
+	(result) => {
+		console.log('\n\n getProjectByNumber');
+		console.log(result);
+		const issues = result.issues;
+		for (let index = 0; index < issues.length; index++) {
+			const content = issues[index];
+			console.log(content);
+		}
 	}
-});
+);
 
 addIssue2Project(
 	process.env.GITHUB_ACCESS_TOKEN ?? '',
